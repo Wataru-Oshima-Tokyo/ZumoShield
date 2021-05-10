@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<robot name="zumo32u4">
+<robot name="zumoShield">
     <link name="base_link">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
-                <mesh filename="package://cartographer_ros/urdf/zumo32u4.STL" scale="1 1 1"/>
+                <mesh filename="package://cartographer_ros/urdf/zumoShield.STL" scale="1 1 1"/>
             </geometry>
             <material name="Grey">
                 <color rgba="0.30 0.30 0.10 1.0"/>

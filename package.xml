@@ -2,12 +2,12 @@
 <package format="2">
   <name>zumo32u4</name>
   <version>0.1.0</version>
-  <description>The zumo32u4 package</description>
+  <description>The zumoShield package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="xxx@xxx.co.jp">PINTO</maintainer>
+  <maintainer email="xxx@xxx.co.jp">Wataru</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
