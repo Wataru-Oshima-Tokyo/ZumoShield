@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>zumo32u4</name>
+  <name>zumoShield</name>
   <version>0.1.0</version>
   <description>The zumoShield package</description>
 
