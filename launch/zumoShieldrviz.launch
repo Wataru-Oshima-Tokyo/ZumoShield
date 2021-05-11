@@ -3,13 +3,13 @@
 <launch>
     <param 
         name="robot_description" 
-        textfile="$(find zumo32u4)/urdf/zumo32u4.urdf" 
+        textfile="$(find zumoShield)/urdf/zumoShield.urdf" 
     />
     <node
         name="rviz" 
         pkg="rviz" 
         type="rviz" 
-        args="-d $(find zumo32u4)/rviz/zumo32u4.rviz" 
+        args="-d $(find zumoShield)/rviz/zumoShield.rviz" 
     />
     <node 
         name="joint_state_publisher" 
@@ -24,7 +24,7 @@
         output="screen">
         <remap 
             from="/joint_states" 
-            to="/zumo32u4/joint_states" 
+            to="/zumoShield/joint_states" 
         />
     </node>
 </launch>
