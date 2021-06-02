@@ -10,10 +10,11 @@
 long timer=0;              // Elapsed time since program started (milli second)
 int vright = 0;            // Left Morter velocity (speed of motor)
 int vleft = 0;             // Right Morter velocity (speed of motor)
-int basespeed = 50;        // Base speed of Morter (Effective Range: 1 - 350)
-long positionLeft  = 0;    // For encoder verification
-long positionRight = 0;    // For encoder verification
-long newLeft, newRight;    // Value of Encorder
+int basespeed = 150;       // Base speed of Morter (Effective Range: 1 - 150)
+int16_t positionLeft  = 0; // For encoder verification
+int16_t positionRight = 0; // For encoder verification
+int16_t newLeft = 0;       // Value of Encorder
+int16_t newRight = 0;      // Value of Encorder
 std_msgs::String str_msg;  // Sensor value to be published
 
 LSM303 compass;            // Magnetometer
@@ -30,6 +31,8 @@ void motorcontrol(const std_msgs::String& cmd_msg)
   // S : stop
 
   String cmd = "";
+  
+  //Serial.println(cmd_msg.data);  // Debug Print
 
   if (strlen(cmd_msg.data) != 0)
   {
@@ -40,62 +43,56 @@ void motorcontrol(const std_msgs::String& cmd_msg)
   {
     motors.setSpeeds(0, 0);
     delay(2);
-    motors.setSpeeds(basespeed, basespeed);
-    vleft = basespeed;vright = basespeed;
+    vleft = basespeed;
+    vright = basespeed;
+    motors.setSpeeds(vleft, vright);
   }
   else if (cmd == ",")
   {
     motors.setSpeeds(0, 0);
     delay(2);
-    motors.setSpeeds(-1 * basespeed, -1 * basespeed);
-    vleft = -1 * basespeed;
-    vright = -1 * basespeed;
+    vleft = -1*basespeed;
+    vright = -1*basespeed;
+    motors.setSpeeds(vleft, vright);
   }
   else if (cmd == "l")
   {
     motors.setSpeeds(0, 0);
     delay(2);
-    motors.setLeftSpeed(basespeed + 50);
-    vleft = basespeed + 50;
-    vright = 0;
+    vleft = (basespeed+220);
+    vright = -1*(basespeed+220);
+    motors.setSpeeds(vleft, vright);
   }
   else if (cmd == "j")
   {
     motors.setSpeeds(0, 0);
     delay(2);
-    motors.setRightSpeed(basespeed + 50);
-    vleft = 0;
-    vright = basespeed + 50;
+    vleft = -1*(basespeed+220);
+    vright = (basespeed+220);
+    motors.setSpeeds(vleft, vright);
   }
   else if (cmd == "s")
   {
-    motors.setSpeeds(0, 0);
-    delay(2);
     vleft = 0;
     vright = 0;
+    motors.setSpeeds(vleft, vright);
+    delay(2);
   }
-
-  int16_t newLeft = encoders.getCountsLeft();
-  int16_t newRight = encoders.getCountsRight();
-
-//  if (!(encoders.checkErrorLeft()) && !(encoders.checkErrorRight())) {
-//    if (newLeft != positionLeft || newRight != positionRight) {
-//      positionLeft = newLeft;
-//      positionRight = newRight;
-//    }
-//  }
 
 }
 
-ros::Subscriber<std_msgs::String> sub("command", motorcontrol);
-//ros::Subscriber<std_msgs::String> sub("/zumo32u4/command", motorcontrol);
+ros::Subscriber<std_msgs::String> sub("/command", motorcontrol);
 ros::Publisher chatter("/sensorval", &str_msg);
+
 
 void setup()
 {
   //Serial.begin(9600);     // Debug Print
 
   Wire.begin();
+
+  encoders.getCountsAndResetLeft();
+  encoders.getCountsAndResetRight();
 
   nh.initNode();           // Init ROS Node
   nh.advertise(chatter);   // Init ROS Publisher
@@ -110,39 +107,44 @@ void setup()
 
 void loop()
 {
-  encoders.getCountsLeft();
   compass.read();   // Read magnetometer
   gyro.read();      // Read gyrometer
   timer = millis();
+  newLeft = encoders.getCountsAndResetLeft();
+  newRight = encoders.getCountsAndResetRight();
+  if (!(encoders.checkErrorLeft()) && !(encoders.checkErrorRight())) {
+    positionLeft = newLeft;
+    positionRight = newRight;    
+  }
   String s = "";
-  s += timer;       // [0]  Elapsed time since program started (milli second)
+  s += timer;          // [0]  Elapsed time since program started (milli second)
   s += ',';
-  s += compass.a.x; // [1]  Accelerometer.x
+  s += compass.a.x;    // [1]  Accelerometer.x
   s += ',';
-  s += compass.a.y; // [2]  Accelerometer.y
+  s += compass.a.y;    // [2]  Accelerometer.y
   s += ',';
-  s += compass.a.z; // [3]  Accelerometer.z
+  s += compass.a.z;    // [3]  Accelerometer.z
   s += ',';
-  s += compass.m.x; // [4]  Magnetometer.x
+  s += compass.m.x;    // [4]  Magnetometer.x
   s += ',';
-  s += compass.m.y; // [5]  Magnetometer.y
+  s += compass.m.y;    // [5]  Magnetometer.y
   s += ',';
-  s += compass.m.z; // [6]  Magnetometer.z
+  s += compass.m.z;    // [6]  Magnetometer.z
   s += ',';
-  s += vleft;       // [7]  Left Morter velocity (speed of motor)
+  s += vleft;          // [7]  Left Morter velocity (speed of motor)
   s += ',';
-  s += vright;      // [8]  Right Morter velocity (speed of motor)
+  s += vright;         // [8]  Right Morter velocity (speed of motor)
   s += ',';
-  s += newLeft;     // [9]  Left Morter odometry (Rotation angle of motor)
+  s += positionLeft;   // [9]  Left Morter odometry (Rotation angle of motor)
   s += ',';
-  s += newRight;    // [10] Right Morter odometry (Rotation angle of motor)
+  s += positionRight;  // [10] Right Morter odometry (Rotation angle of motor)
   s += ',';
-  s += gyro.g.x;    // [11] Gyrometer.x
+  s += gyro.g.x;       // [11] Gyrometer.x
   s += ',';
-  s += gyro.g.y;    // [12] Gyrometer.y
+  s += gyro.g.y;       // [12] Gyrometer.y
   s += ',';
-  s += gyro.g.z;    // [13] Gyrometer.z
-
+  s += gyro.g.z;       // [13] Gyrometer.z
+  
   //Serial.println(s);  // Debug Print
 
   str_msg.data = s.c_str();
