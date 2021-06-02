@@ -84,7 +84,7 @@ class Zumo:
         try:
             self.ser.flush()
             self.command = ""
-            self.command = self.ser.read()
+            self.command = self.ser.read().decode('utf-8')
             if self.command != "":
                 rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
