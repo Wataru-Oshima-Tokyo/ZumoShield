@@ -27,17 +27,17 @@ class Zumo:
         self.odomL=0
         self.odomR=0
 
-        try:
-            self.PORT = rospy.get_param('BLUETOOTH_PORT') 
-        except:
-            rospy.set_param('BLUETOOTH_PORT',"/dev/rfcomm0")
-            self.PORT = rospy.get_param('BLUETOOTH_PORT')
+#         try:
+#             self.PORT = rospy.get_param('BLUETOOTH_PORT') 
+#         except:
+#             rospy.set_param('BLUETOOTH_PORT',"/dev/rfcomm0")
+#             self.PORT = rospy.get_param('BLUETOOTH_PORT')
 
-        try:
-            self.BAUDRATE = rospy.get_param('BLUETOOTH_BAUDRATE') 
-        except:
-            rospy.set_param('BLUETOOTH_BAUDRATE', "115200")
-            self.BAUDRATE = rospy.get_param('BLUETOOTH_BAUDRATE')
+#         try:
+#             self.BAUDRATE = rospy.get_param('BLUETOOTH_BAUDRATE') 
+#         except:
+#             rospy.set_param('BLUETOOTH_BAUDRATE', "115200")
+#             self.BAUDRATE = rospy.get_param('BLUETOOTH_BAUDRATE')
 
         self.TIMEOUT = 0.01
         self.sensorvalue = list()
@@ -171,8 +171,8 @@ if __name__=="__main__":
         zumo.pubcommand()
         sleep(0.001)
 
-    rospy.delete_param("BLUETOOTH_PORT")
-    rospy.delete_param("BLUETOOTH_BAUDRATE")
+#     rospy.delete_param("BLUETOOTH_PORT")
+#     rospy.delete_param("BLUETOOTH_BAUDRATE")
     zumo.ser.close()
 
 
