@@ -1,5 +1,6 @@
 #define USE_USBCON
 #include <ros.h>
+#include <ros/console.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Twist.h>
 #include <Wire.h>
@@ -16,8 +17,8 @@ int16_t positionLeft  = 0; // For encoder verification
 int16_t positionRight = 0; // For encoder verification
 int16_t newLeft = 0;       // Value of Encorder
 int16_t newRight = 0;      // Value of Encorder
-float64_t forwardSpeed = 0.0f;
-float64_t rotateSpeed = 0.0f;
+float forwardSpeed = 0.0f;
+float rotateSpeed = 0.0f;
 std_msgs::String str_msg;  // Sensor value to be published
 geometry_msgs::Twist cmd_vel //cmd_vel value
   
@@ -32,7 +33,7 @@ void control_Callback(const geometry_msgs::Twist& cmd_vel)
   
   	ROS_INFO("Linear Components:[%f,%f,%f]", cmd_vel.linear.x,  cmd_vel.linear.y,  cmd_vel.linear.z);
 	  ROS_INFO("Angular Components:[%f,%f,%f]",cmd_vel.angular.x, cmd_vel.angular.y, cmd_vel.angular.z);
-   forwardSpeed = cmd_vel.linear.x
+   forwardSpeed = cmd_vel.linear.x;
    rotateSpeed = cmd_vel.angular.z;
   
     motors.setSpeeds(0, 0);
