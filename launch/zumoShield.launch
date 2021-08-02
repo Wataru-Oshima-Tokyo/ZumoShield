@@ -32,19 +32,21 @@
         output="screen"
     />
     <node 
-        name="rplidarNode"          
-        pkg="rplidar_ros"  
-        type="rplidarNode" 
+        name="ldlidarNode"          
+        pkg="ldlidar"  
+        type="ldlidar" 
         output="screen">
-        <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>  
+        <!--param name="serial_port"         type="string" value="/dev/ttyUSB0"/>  
         <param name="serial_baudrate"     type="int"    value="115200"/>
         <param name="frame_id"            type="string" value="scan"/>
         <param name="inverted"            type="bool"   value="false"/>
-        <param name="angle_compensate"    type="bool"   value="true"/>
-        <remap 
+        <param name="angle_compensate"    type="bool"   value="true"/-->
+        <param name="serial_port"         type="string"   value="/dev/ttyS0"/>
+        <param name="lidar_frame"         type="string"   value="laser"/>    
+<!--         <remap 
             from="/scan" 
             to="/zumoShield/scan" 
-        />
+        /> -->
     </node>
     <node
         name="rviz" 
