@@ -31,10 +31,20 @@
         type="zumoShield.py" 
         output="screen"
     />
+     <node 
+        pkg="rosserial_python" 
+        name="rosserialNode" 
+        type="serial_node.py" 
+        output="screen"
+        <param name="_port"         type="string"   value="/dev/ttyACM0"/>
+        <param name="_baud"         type="int"   value="115200"/>
+    />
+
     <node 
         name="ldlidarNode"          
         pkg="ldlidar"  
         type="ldlidar" 
+        args="LD06"
         output="screen">
         <!--param name="serial_port"         type="string" value="/dev/ttyUSB0"/>  
         <param name="serial_baudrate"     type="int"    value="115200"/>
