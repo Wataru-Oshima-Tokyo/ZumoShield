@@ -1,7 +1,7 @@
 #define USE_USBCON
 #include <ros.h>
 #include <std_msgs/String.h>
-#inclue <geometry_msgs/Twist.h>
+#include <geometry_msgs/Twist.h>
 #include <Wire.h>
 #include <LSM303.h>
 #include <L3G.h>
