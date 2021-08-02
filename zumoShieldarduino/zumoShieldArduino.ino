@@ -95,7 +95,7 @@ void motorcontrol(const std_msgs::String& cmd_msg)
 }
 
 //ros::Subscriber<std_msgs::String> sub("/command", motorcontrol);
-ros::Subscriber<std_msgs::String> sub("/cmd_vel", motorcontrol);
+ros::Subscriber<std_msgs::String> sub("/cmd_vel", control_Callback);
 ros::Publisher chatter("/sensorval", &str_msg);
 
 
