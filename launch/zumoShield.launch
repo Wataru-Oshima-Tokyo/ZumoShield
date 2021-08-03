@@ -36,7 +36,7 @@
         name="rosserialNode" 
         type="serial_node.py" 
         output="screen">
-        <param name="~port"         type="string"   value="/dev/ttyAMA0"/>
+        <param name="~port"         type="string"   value="/dev/ttyACM0"/>
         <param name="~baud"         type="int"   value="115200"/>
     </node>
 
