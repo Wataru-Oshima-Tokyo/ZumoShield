@@ -9,6 +9,8 @@
 #define LEFT_B     IO_E2
 #define RIGHT_XOR  7
 #define RIGHT_B    23
+#define RIGHT_CNT_FLAG 0x0001
+#define LEFT_CNT_FLAG  0x0002
 
 static volatile bool lastLeftA;
 static volatile bool lastLeftB;
@@ -23,20 +25,26 @@ static volatile bool errorRight;
 static volatile uint16_t countLeft;
 static volatile uint16_t countRight;
 
-ISR(PCINT0_vect)
-{
-    bool newLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
-    bool newLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ newLeftB;
+ISR(TIMER1_CAPT_vect)
+{ 
+  bit_is_clear(TIFR1, ICF1);
+  if (digitalRead(5) == HIGH) {
+    countRight++;
+  } else {
+    countRight--;
+  }
+  flag |= RIGHT_CNT_FLAG;
+}
 
-    countLeft += (newLeftA ^ lastLeftB) - (lastLeftA ^ newLeftB);
-
-    if((lastLeftA ^ newLeftA) & (lastLeftB ^ newLeftB))
-    {
-        errorLeft = true;
-    }
-
-    lastLeftA = newLeftA;
-    lastLeftB = newLeftB;
+ISR(TIMER3_CAPT_vect)
+{ 
+  bit_is_clear(TIFR3, ICF3);
+  if (digitalRead(11) == LOW) {
+    countLeft++;
+  } else {
+    countLeft--;
+  }
+  flag |= LEFT_CNT_FLAG;
 }
 
 static void rightISR()
@@ -68,7 +76,31 @@ void ZumoShieldEncoders::init2()
     PCICR = (1 << PCIE0);
     PCMSK0 = (1 << PCINT4);
     PCIFR = (1 << PCIF0);  // Clear its interrupt flag by writing a 1.
-
+      /*
+       * ICP1はアナログコンパレータと機能を兼用しているので
+       * それをDISABLEとする。
+       * 「0」でENABLE、「1」でDISABLE
+       */
+      ACSR = 0x80;
+      ADCSRB = 0x00;
+      DIDR1 = 0x00;
+      /*
+       * ICP1(インプットキャプチャー)の設定
+       */
+      TCCR1A= 0x00;
+      TCCR1B = 0x41;  // Disable Input Capture Noise Canceler
+                      // Input Capture Edge : RISE
+      TIMSK1 = 0x20;  // Enable Input Capture Interrupt
+      /*
+       * ICP3(インプットキャプチャー)の設定
+       */
+      TCCR3A= 0x00;
+      TCCR3B = 0x41;  // Disable Input Capture Noise Canceler
+                      // Input Capture Edge : RISE
+      TIMSK3 = 0x20;  // Enable Input Capture Interrupt
+      /*
+   * DEBUGにシリアルモニタを使用
+   */
     // Enable interrupt on PE6 for the right encoder.  We use attachInterrupt
     // instead of defining ISR(INT6_vect) ourselves so that this class will be
     // compatible with other code that uses attachInterrupt.
