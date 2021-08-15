@@ -47,21 +47,21 @@ ISR(TIMER3_CAPT_vect)
   flag |= LEFT_CNT_FLAG;
 }
 
-static void rightISR()
-{
-    bool newRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
-    bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB;
+// static void rightISR()
+// {
+//     bool newRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
+//     bool newRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ newRightB;
 
-    countRight += (newRightA ^ lastRightB) - (lastRightA ^ newRightB);
+//     countRight += (newRightA ^ lastRightB) - (lastRightA ^ newRightB);
 
-    if((lastRightA ^ newRightA) & (lastRightB ^ newRightB))
-    {
-        errorRight = true;
-    }
+//     if((lastRightA ^ newRightA) & (lastRightB ^ newRightB))
+//     {
+//         errorRight = true;
+//     }
 
-    lastRightA = newRightA;
-    lastRightB = newRightB;
-}
+//     lastRightA = newRightA;
+//     lastRightB = newRightB;
+// }
 
 void ZumoShieldEncoders::init2()
 {
