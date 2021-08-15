@@ -8,9 +8,16 @@
 #include <ZumoShieldEncoders.h>
 #include <ZumoShield.h>
 
+#define RIGHT_CNT_FLAG 0x0001
+#define LEFT_CNT_FLAG  0x0002
+
+
 long timer=0;              // Elapsed time since program started (milli second)
 int vright = 0;            // Left Morter velocity (speed of motor)
-int vleft = 0;             // Right Morter velocity (speed of motor)
+int vleft = 0;  // Right Morter velocity (speed of motor)
+int r_cnt = 0;
+int l_cnt = 0;
+int flag = 0;
 int basespeed = 150;       // Base speed of Morter (Effective Range: 1 - 150)
 int16_t positionLeft  = 0; // For encoder verification
 int16_t positionRight = 0; // For encoder verification
@@ -103,7 +110,35 @@ ros::Publisher chatter("/sensorval", &str_msg);
 void setup()
 {
   //Serial.begin(9600);     // Debug Print
-
+  // put your setup code here, to run once:
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  pinMode(11, INPUT);
+  pinMode(13, INPUT);
+  
+    /*
+   * ICP1はアナログコンパレータと機能を兼用しているので
+   * それをDISABLEとする。
+   * 「0」でENABLE、「1」でDISABLE
+   */
+  ACSR = 0x80;
+  ADCSRB = 0x00;
+  DIDR1 = 0x00;
+  /*
+   * ICP1(インプットキャプチャー)の設定
+   */
+  TCCR1A= 0x00;
+  TCCR1B = 0x41;  // Disable Input Capture Noise Canceler
+                  // Input Capture Edge : RISE
+  TIMSK1 = 0x20;  // Enable Input Capture Interrupt
+  /*
+   * ICP3(インプットキャプチャー)の設定
+   */
+  TCCR3A= 0x00;
+  TCCR3B = 0x41;  // Disable Input Capture Noise Canceler
+                  // Input Capture Edge : RISE
+  TIMSK3 = 0x20;  // Enable Input Capture Interrupt
+  
   Wire.begin();
 
   encoders.getCountsAndResetLeft();
@@ -127,10 +162,10 @@ void loop()
   timer = millis();
   newLeft = encoders.getCountsAndResetLeft();
   newRight = encoders.getCountsAndResetRight();
-  if (!(encoders.checkErrorLeft()) && !(encoders.checkErrorRight())) {
-    positionLeft = newLeft;
-    positionRight = newRight;    
-  }
+//   if (!(encoders.checkErrorLeft()) && !(encoders.checkErrorRight())) {
+//     positionLeft = newLeft;
+//     positionRight = newRight;    
+//   }
   String s = "";
   s += timer;          // [0]  Elapsed time since program started (milli second)
   s += ',';
@@ -150,9 +185,9 @@ void loop()
   s += ',';
   s += vright;         // [8]  Right Morter velocity (speed of motor)
   s += ',';
-  s += positionLeft;   // [9]  Left Morter odometry (Rotation angle of motor)
+  s += l_cnt;   // [9]  Left Morter odometry (Rotation angle of motor)
   s += ',';
-  s += positionRight;  // [10] Right Morter odometry (Rotation angle of motor)
+  s += r_cnt;  // [10] Right Morter odometry (Rotation angle of motor)
   s += ',';
   s += gyro.g.x;       // [11] Gyrometer.x
   s += ',';
@@ -160,7 +195,7 @@ void loop()
   s += ',';
   s += gyro.g.z;       // [13] Gyrometer.z
   
-  //Serial.println(s);  // Debug Print
+  Serial.println(s);  // Debug Print
 
   str_msg.data = s.c_str();
   chatter.publish(&str_msg);
@@ -168,3 +203,24 @@ void loop()
   delay(1);
 }
 
+ISR(TIMER1_CAPT_vect)
+{ 
+  bit_is_clear(TIFR1, ICF1);
+  if (digitalRead(5) == HIGH) {
+    r_cnt++;
+  } else {
+    r_cnt--;
+  }
+  flag |= RIGHT_CNT_FLAG;
+}
+
+ISR(TIMER3_CAPT_vect)
+{ 
+  bit_is_clear(TIFR3, ICF3);
+  if (digitalRead(11) == LOW) {
+    l_cnt++;
+  } else {
+    l_cnt--;
+  }
+  flag |= LEFT_CNT_FLAG;
+}
