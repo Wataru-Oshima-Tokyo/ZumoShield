@@ -105,7 +105,7 @@ void ZumoShieldEncoders::init2()
     // Enable interrupt on PE6 for the right encoder.  We use attachInterrupt
     // instead of defining ISR(INT6_vect) ourselves so that this class will be
     // compatible with other code that uses attachInterrupt.
-    attachInterrupt(4, rightISR, CHANGE);
+    //attachInterrupt(4, rightISR, CHANGE);
 
     // Initialize the variables.  It's good to do this after enabling the
     // interrupts in case the interrupts fired by accident as we were enabling
