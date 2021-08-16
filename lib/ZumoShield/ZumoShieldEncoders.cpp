@@ -1,24 +1,24 @@
 // Copyright Pololu Corporation.  For more information, see http://www.pololu.com/
 
 #include <ZumoShieldEncoders.h>
-// #include <FastGPIO.h>
-// #include <avr/interrupt.h>
-// #include <Arduino.h>
+#include <FastGPIO.h>
+#include <avr/interrupt.h>
+#include <Arduino.h>
 
-// #define LEFT_XOR   8
-// #define LEFT_B     IO_E2
-// #define RIGHT_XOR  7
-// #define RIGHT_B    23
+#define LEFT_XOR   8
+#define LEFT_B     IO_E2
+#define RIGHT_XOR  7
+#define RIGHT_B    23
 #define RIGHT_CNT_FLAG 0x0001
 #define LEFT_CNT_FLAG  0x0002
 
-// static volatile bool lastLeftA;
-// static volatile bool lastLeftB;
-// static volatile bool lastRightA;
-// static volatile bool lastRightB;
+static volatile bool lastLeftA;
+static volatile bool lastLeftB;
+static volatile bool lastRightA;
+static volatile bool lastRightB;
 
-// static volatile bool errorLeft;
-// static volatile bool errorRight;
+static volatile bool errorLeft;
+static volatile bool errorRight;
 
 // These count variables are uint16_t instead of int16_t because
 // signed integer overflow is undefined behavior in C++.
