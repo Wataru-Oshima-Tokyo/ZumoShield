@@ -24,8 +24,8 @@ static volatile bool errorRight;
 // signed integer overflow is undefined behavior in C++.
 static volatile uint16_t countLeft;
 static volatile uint16_t countRight;
-int countLeft=0;
-int countRight=0;
+// int countLeft=0;
+// int countRight=0;
 int flag = 0;
 
 ISR(TIMER1_CAPT_vect)
