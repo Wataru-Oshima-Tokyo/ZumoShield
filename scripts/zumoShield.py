@@ -107,9 +107,12 @@ class Zumo:
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
         self.p.linear_acceleration.y=4*9.81*(float(self.sensorvalue[2])/2**16)/100
         self.p.linear_acceleration.z=4*9.81*(float(self.sensorvalue[3])/2**16)/100
-        self.p.orientation.x= float(self.sensorvalue[4])
-        self.p.orientation.y=float(self.sensorvalue[5])
-        self.p.orientation.z=float(self.sensorvalue[6])
+#         self.p.orientation.x= float(self.sensorvalue[4])
+        self.p.orientation.x= float(self.sensorvalue[3])
+#         self.p.orientation.y=float(self.sensorvalue[5])
+        self.p.orientation.y=float(self.sensorvalue[4])
+#         self.p.orientation.z=float(self.sensorvalue[6])
+        self.p.orientation.z=float(self.sensorvalue[5])
         self.p.header.stamp = rospy.Time.now()
         self.pub_imu.publish(self.p)
     
@@ -118,12 +121,19 @@ class Zumo:
         VL=0.0
         VR=0.0
 
-        if float(self.sensorvalue[10])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
+#         if float(self.sensorvalue[10])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
+#             self.delta=(float(self.sensorvalue[0])-float(self.temps))/1000 #[Second] Elapsed time from latest measurement
+#             VR=(float(self.sensorvalue[10])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
+#             VL=(float(self.sensorvalue[9])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
+#             self.odomL=float(self.sensorvalue[9])
+#             self.odomR=float(self.sensorvalue[10])
+#             self.temps=self.sensorvalue[0]
+        if float(self.sensorvalue[2])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
             self.delta=(float(self.sensorvalue[0])-float(self.temps))/1000 #[Second] Elapsed time from latest measurement
-            VR=(float(self.sensorvalue[10])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
-            VL=(float(self.sensorvalue[9])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
-            self.odomL=float(self.sensorvalue[9])
-            self.odomR=float(self.sensorvalue[10])
+            VR=(float(self.sensorvalue[2])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
+            VL=(float(self.sensorvalue[1])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
+            self.odomL=float(self.sensorvalue[1])
+            self.odomR=float(self.sensorvalue[2])
             self.temps=self.sensorvalue[0]
             #rospy.loginfo("[odomL] "+str(self.odomL)+" [odomR] "+str(self.odomR)+" [delta] "+str(self.delta)+" [VL] "+str(VL)+" [VR] "+str(VR))
         else :
