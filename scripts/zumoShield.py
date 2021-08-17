@@ -129,7 +129,7 @@ class Zumo:
 #             self.odomL=float(self.sensorvalue[9])
 #             self.odomR=float(self.sensorvalue[10])
 #             self.temps=self.sensorvalue[0]
-        if float(self.sensorvalue[2])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
+        if float(self.sensorvalue[2])!=self.odomR or float(self.sensorvalue[1])!=self.odomL:
             self.delta=(float(self.sensorvalue[0])-float(self.temps))/1000 #[Second] Elapsed time from latest measurement
             VR=(float(self.sensorvalue[2])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
             VL=(float(self.sensorvalue[1])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
