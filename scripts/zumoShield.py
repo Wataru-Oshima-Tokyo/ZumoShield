@@ -136,7 +136,7 @@ class Zumo:
             self.odomL=float(self.sensorvalue[1])
             self.odomR=float(self.sensorvalue[2])
             self.temps=self.sensorvalue[0]
-            rospy.loginfo("[odomL] "+str(self.odomL)+" [odomR] "+str(self.odomR)+" [delta] "+str(self.delta)+" [VL] "+str(VL)+" [VR] "+str(VR))
+#             rospy.loginfo("[odomL] "+str(self.odomL)+" [odomR] "+str(self.odomR)+" [delta] "+str(self.delta)+" [VL] "+str(VL)+" [VR] "+str(VR))
         else :
             VR=0.0
             VL=0.0
