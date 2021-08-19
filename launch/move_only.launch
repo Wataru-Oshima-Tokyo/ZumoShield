@@ -1,6 +1,5 @@
-<?xml version="1.0" ?>
-
 <launch>
+
     <rosparam 
         command="load" 
         file="$(find zumoShield)/config/param.yaml" 
@@ -25,13 +24,7 @@
             to="/zumoShield/joint_states" 
         /> -->
     </node>
-    <node 
-        pkg="zumoShield" 
-        name="zumoShield" 
-        type="zumoShield.py" 
-        output="screen"
-    />
-     <node 
+        <node 
         pkg="rosserial_python" 
         name="rosserialNode" 
         type="serial_node.py" 
@@ -40,7 +33,7 @@
         <param name="~baud"         type="int"   value="115200"/>
     </node>
 
-    <node 
+        <node 
         name="ldlidarNode"          
         pkg="ldlidar"  
         type="ldlidar" 
@@ -53,22 +46,16 @@
         <param name="angle_compensate"    type="bool"   value="true"/-->
         <param name="serial_port"         type="string"   value="/dev/ttyS0"/>
         <param name="lidar_frame"         type="string"   value="laser"/>    
-<!--         <remap 
-            from="/scan" 
-            to="/zumoShield/scan" 
-        /> -->
     </node>
-    
-    <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom"/>
+
+        <node pkg="tf2_ros" type="static_transform_publisher" name="map_to_odom" args="0 0 0 0 0 0 map odom"/>
     <node pkg="tf2_ros" type="static_transform_publisher" name="odom_to_base_link" args="0 0 0 0 0 0  odom base_link"/>
     <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_laser" args="0 0 0 0 0 0  base_link laser"/>
-    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_imu" args="0 0 0 0 0 0  base_link imu_link"/>
-<!--     <node pkg="tf2_ros" type="static_transform_publisher" name="camera_link_to_map" args="0 0 0 0 0 0 base_link camera_link"/>
-    <node pkg="tf2_ros" type="static_transform_publisher" name="base_link_to_base" args="0 0 0 0 0 0 base_link base"/> -->
+
     <node
-        name="rviz" 
-        pkg="rviz" 
-        type="rviz" 
-        args="-d $(find zumoShield)/rviz/zumoShield.rviz" 
-    /> 
+        pkg="teleop_twist_keyboard"
+        name="teleop_twist_keyboardNode"
+        type="teleop_twist_keyboard.py"
+        output="screen">
+   </node>
 </launch>
