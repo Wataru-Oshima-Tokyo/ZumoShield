@@ -11,7 +11,7 @@ from time import sleep
 from geometry_msgs.msg import Twist, Pose
 from sensor_msgs.msg import Imu
 from nav_msgs.msg import Odometry
-from std_msgs.msg import String, 
+from std_msgs.msg import String 
 
 
 class Zumo:
@@ -89,10 +89,10 @@ class Zumo:
         try:
 #             self.ser.flush()
             self.command = ""
-            self.command +=str(self.linearSpeed) + "," + str(self.angularSpeed)
+            self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
 #             self.command = self.ser.read().decode('utf-8')
             if self.command != "":
-                 rospy.loginfo("Command received ["+self.command+"]")
+                rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
         except Exception as e:
             print(e)
