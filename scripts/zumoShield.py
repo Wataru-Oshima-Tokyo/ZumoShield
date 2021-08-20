@@ -60,6 +60,7 @@ class Zumo:
         self.p.header.frame_id = "imu_link"
         
         #Init Twist
+        self.cvel = Twist()
         self.linearSpeed, self.angularSpeed = 0,0
 #         try:
 #             self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
@@ -111,10 +112,10 @@ class Zumo:
             print "subsensorval Error"
             traceback.print_exc()
 
-    def subcmd_vel(self, msg):
+    def subcmd_vel(self, cvel):
                 global linearSpeed, angularSpeed
-                linearSpeed = self.msg.linear.x
-                angularSpeed = self.msg.angular.z
+                linearSpeed = self.cvel.linear.x
+                angularSpeed = self.cvel.angular.z
                 
                 
     def pubimu(self):
