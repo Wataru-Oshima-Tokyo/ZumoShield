@@ -120,12 +120,12 @@ class Zumo:
 #                 self.angularSpeed = self.cvel.angular.z
 #                 print(self.linearSpeed, self.angularSpeed)
                 try:
-                self.command = ""
-                self.command =str(self.cvel.linear.x) + "," + str(self.cvel.angular.z)
-    #             self.command = self.ser.read().decode('utf-8')
-                if self.command != "":
-                    rospy.loginfo("Command received ["+self.command+"]")
-                    self.pub_comm.publish(self.command)
+                    self.command = ""
+                    self.command =str(self.cvel.linear.x) + "," + str(self.cvel.angular.z)
+        #             self.command = self.ser.read().decode('utf-8')
+                    if self.command != "":
+                        rospy.loginfo("Command received ["+self.command+"]")
+                        self.pub_comm.publish(self.command)
                 except Exception as e:
                     print(e)
                     pass
