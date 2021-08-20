@@ -95,7 +95,8 @@ class Zumo:
             if self.command != "":
                 rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
-        except:
+        except Exception as e:
+            print(e)
             pass
 
     def subsensorval(self, svalue):
