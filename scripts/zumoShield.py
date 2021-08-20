@@ -87,19 +87,19 @@ class Zumo:
     def __delete__(self):
         self.ser.close()
 
-    def pubcommand(self):
-        try:
-            print("")
-# #             self.ser.flush()
-#             self.command = ""
-#             self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
-# #             self.command = self.ser.read().decode('utf-8')
-#             if self.command != "":
-#                 rospy.loginfo("Command received ["+self.command+"]")
-#                 self.pub_comm.publish(self.command)
-        except Exception as e:
-            print(e)
-            pass
+#     def pubcommand(self):
+#         try:
+#             print("")
+# # #             self.ser.flush()
+# #             self.command = ""
+# #             self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
+# # #             self.command = self.ser.read().decode('utf-8')
+# #             if self.command != "":
+# #                 rospy.loginfo("Command received ["+self.command+"]")
+# #                 self.pub_comm.publish(self.command)
+#         except Exception as e:
+#             print(e)
+#             pass
 
     def subsensorval(self, svalue):
         try:
