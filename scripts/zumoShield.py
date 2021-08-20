@@ -26,7 +26,7 @@ class Zumo:
         self.command=""                  #[String] Robot operation command
         self.odomL=0
         self.odomR=0
-
+ 
 #         try:
 #             self.PORT = rospy.get_param('BLUETOOTH_PORT') 
 #         except:
@@ -58,7 +58,9 @@ class Zumo:
         self.p = Imu()
         self.p.header.stamp = rospy.Time.now()
         self.p.header.frame_id = "imu_link"
-
+        
+        #Init Twist
+        self.linearSpeed, self.angularSpeed = 0,0
 #         try:
 #             self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
 #             sleep(1)
@@ -66,6 +68,9 @@ class Zumo:
 #         except:
 #             rospy.logwarn("Serial connection failure")
 
+
+        self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
+        rospy.loginfo("Subscriber initialization success /cmd_vel")
         self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
         rospy.loginfo("Publisher initialization success /command")
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
@@ -83,8 +88,10 @@ class Zumo:
     def pubcommand(self):
         try:
             self.ser.flush()
-            self.command = ""
-            self.command = self.ser.read().decode('utf-8')
+            self.command = []
+            self.command.append(self.linearSpeed)
+            self.command.append(self.angularSpeed)
+#             self.command = self.ser.read().decode('utf-8')
             if self.command != "":
                 rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
@@ -104,6 +111,12 @@ class Zumo:
             print "subsensorval Error"
             traceback.print_exc()
 
+    def subcmd_vel(self, msg):
+                global linearSpeed, angularSpeed
+                linearSpeed = self.msg.linear.x
+                angularSpeed = self.msg.angular.z
+                
+                
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
         self.p.linear_acceleration.y=4*9.81*(float(self.sensorvalue[2])/2**16)/100
