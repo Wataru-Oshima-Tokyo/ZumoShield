@@ -61,7 +61,8 @@ class Zumo:
         
         #Init Twist
         self.cvel = Twist()
-        self.linearSpeed, self.angularSpeed = 0,0
+        self.cvel.linear.x = 0
+        self.cvel.angular.z = 0
 #         try:
 #             self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
 #             sleep(1)
@@ -88,13 +89,14 @@ class Zumo:
 
     def pubcommand(self):
         try:
-#             self.ser.flush()
-            self.command = ""
-            self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
-#             self.command = self.ser.read().decode('utf-8')
-            if self.command != "":
-                rospy.loginfo("Command received ["+self.command+"]")
-                self.pub_comm.publish(self.command)
+            print("")
+# #             self.ser.flush()
+#             self.command = ""
+#             self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
+# #             self.command = self.ser.read().decode('utf-8')
+#             if self.command != "":
+#                 rospy.loginfo("Command received ["+self.command+"]")
+#                 self.pub_comm.publish(self.command)
         except Exception as e:
             print(e)
             pass
@@ -113,10 +115,20 @@ class Zumo:
             traceback.print_exc()
 
     def subcmd_vel(self, cvel):
-                global self.linearSpeed, self.angularSpeed
-                self.linearSpeed = self.cvel.linear.x
-                self.angularSpeed = self.cvel.angular.z
-                print(self.linearSpeed, self.angularSpeed)
+#                 global self.linearSpeed, self.angularSpeed
+#                 self.linearSpeed = self.cvel.linear.x
+#                 self.angularSpeed = self.cvel.angular.z
+#                 print(self.linearSpeed, self.angularSpeed)
+                try:
+                self.command = ""
+                self.command =str(self.cvel.linear.x) + "," + str(self.cvel.angular.z)
+    #             self.command = self.ser.read().decode('utf-8')
+                if self.command != "":
+                    rospy.loginfo("Command received ["+self.command+"]")
+                    self.pub_comm.publish(self.command)
+                except Exception as e:
+                    print(e)
+                    pass
                 
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
