@@ -11,7 +11,7 @@ from time import sleep
 from geometry_msgs.msg import Twist, Pose
 from sensor_msgs.msg import Imu
 from nav_msgs.msg import Odometry
-from std_msgs.msg import String, Int32MultiArray
+from std_msgs.msg import String, 
 
 
 class Zumo:
@@ -71,7 +71,7 @@ class Zumo:
 
         self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
         rospy.loginfo("Subscriber initialization success /cmd_vel")
-        self.pub_comm      = rospy.Publisher('command', Int32MultiArray, queue_size=10)
+        self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
         rospy.loginfo("Publisher initialization success /command")
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
@@ -88,12 +88,11 @@ class Zumo:
     def pubcommand(self):
         try:
 #             self.ser.flush()
-            self.command = []
-            self.command.append(self.linearSpeed)
-            self.command.append(self.angularSpeed)
+            self.command = ""
+            self.command +=str(self.linearSpeed) + "," + str(self.angularSpeed)
 #             self.command = self.ser.read().decode('utf-8')
             if self.command != "":
-#                 rospy.loginfo("Command received ["+self.command+"]")
+                 rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
         except Exception as e:
             print(e)
