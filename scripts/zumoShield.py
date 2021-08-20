@@ -205,7 +205,7 @@ if __name__=="__main__":
     zumo = Zumo()
 
     while not rospy.is_shutdown():
-        zumo.pubcommand()
+#         zumo.pubcommand()
         sleep(0.001)
 
 #     rospy.delete_param("BLUETOOTH_PORT")
