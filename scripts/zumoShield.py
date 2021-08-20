@@ -87,7 +87,7 @@ class Zumo:
 
     def pubcommand(self):
         try:
-            self.ser.flush()
+#             self.ser.flush()
             self.command = []
             self.command.append(self.linearSpeed)
             self.command.append(self.angularSpeed)
