@@ -59,12 +59,12 @@ class Zumo:
         self.p.header.stamp = rospy.Time.now()
         self.p.header.frame_id = "imu_link"
 
-        try:
-            self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
-            sleep(1)
-            rospy.loginfo("Serial connection established on the port "+str(self.PORT))
-        except:
-            rospy.logwarn("Serial connection failure")
+#         try:
+#             self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
+#             sleep(1)
+#             rospy.loginfo("Serial connection established on the port "+str(self.PORT))
+#         except:
+#             rospy.logwarn("Serial connection failure")
 
         self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
         rospy.loginfo("Publisher initialization success /command")
@@ -184,6 +184,6 @@ if __name__=="__main__":
 
 #     rospy.delete_param("BLUETOOTH_PORT")
 #     rospy.delete_param("BLUETOOTH_BAUDRATE")
-    zumo.ser.close()
+#     zumo.ser.close()
 
 
