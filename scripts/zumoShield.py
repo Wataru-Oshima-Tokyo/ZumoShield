@@ -71,7 +71,7 @@ class Zumo:
 
         self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
         rospy.loginfo("Subscriber initialization success /cmd_vel")
-        self.pub_comm      = rospy.Publisher('command', Int32MultiArray, queue_size=10)
+        self.pub_comm      = rospy.Publisher('command', list, queue_size=10)
         rospy.loginfo("Publisher initialization success /command")
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
