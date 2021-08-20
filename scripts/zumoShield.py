@@ -121,7 +121,7 @@ class Zumo:
 #                 print(self.linearSpeed, self.angularSpeed)
                 try:
                     self.command = ""
-                    self.command =str(self.cvel.linear.x) + "," + str(self.cvel.angular.z)
+                    self.command =str(cvel.linear.x) + "," + str(cvel.angular.z)
         #             self.command = self.ser.read().decode('utf-8')
                     if self.command != "":
                         rospy.loginfo("Command received ["+self.command+"]")
