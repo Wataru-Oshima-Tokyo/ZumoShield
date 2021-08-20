@@ -93,7 +93,7 @@ class Zumo:
             self.command.append(self.angularSpeed)
 #             self.command = self.ser.read().decode('utf-8')
             if self.command != "":
-                rospy.loginfo("Command received ["+self.command+"]")
+#                 rospy.loginfo("Command received ["+self.command+"]")
                 self.pub_comm.publish(self.command)
         except Exception as e:
             print(e)
