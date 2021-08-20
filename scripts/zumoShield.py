@@ -113,10 +113,10 @@ class Zumo:
             traceback.print_exc()
 
     def subcmd_vel(self, cvel):
-                global linearSpeed, angularSpeed
-                linearSpeed = self.cvel.linear.x
-                angularSpeed = self.cvel.angular.z
-                
+                global self.linearSpeed, self.angularSpeed
+                self.linearSpeed = self.cvel.linear.x
+                self.angularSpeed = self.cvel.angular.z
+                print(self.linearSpeed, self.angularSpeed)
                 
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
