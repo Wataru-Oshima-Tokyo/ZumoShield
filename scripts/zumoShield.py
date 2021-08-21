@@ -71,10 +71,10 @@ class Zumo:
 #             rospy.logwarn("Serial connection failure")
 
 
-        self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
-        rospy.loginfo("Subscriber initialization success /cmd_vel")
-        self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
-        rospy.loginfo("Publisher initialization success /command")
+#         self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
+#         rospy.loginfo("Subscriber initialization success /cmd_vel")
+#         self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
+#         rospy.loginfo("Publisher initialization success /command")
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
         self.pub_odom      = rospy.Publisher('odom', Odometry, queue_size=10)
@@ -114,21 +114,21 @@ class Zumo:
             print "subsensorval Error"
             traceback.print_exc()
 
-    def subcmd_vel(self, cvel):
-#                 global self.linearSpeed, self.angularSpeed
-#                 self.linearSpeed = self.cvel.linear.x
-#                 self.angularSpeed = self.cvel.angular.z
-#                 print(self.linearSpeed, self.angularSpeed)
-                try:
-                    self.command = ""
-                    self.command =str(cvel.linear.x) + "," + str(cvel.angular.z)
-        #             self.command = self.ser.read().decode('utf-8')
-                    if self.command != "":
-                        rospy.loginfo("Command received ["+self.command+"]")
-                        self.pub_comm.publish(self.command)
-                except Exception as e:
-                    print(e)
-                    pass
+#     def subcmd_vel(self, cvel):
+# #                 global self.linearSpeed, self.angularSpeed
+# #                 self.linearSpeed = self.cvel.linear.x
+# #                 self.angularSpeed = self.cvel.angular.z
+# #                 print(self.linearSpeed, self.angularSpeed)
+#                 try:
+#                     self.command = ""
+#                     self.command =str(cvel.linear.x) + "," + str(cvel.angular.z)
+#         #             self.command = self.ser.read().decode('utf-8')
+#                     if self.command != "":
+#                         rospy.loginfo("Command received ["+self.command+"]")
+#                         self.pub_comm.publish(self.command)
+#                 except Exception as e:
+#                     print(e)
+#                     pass
                 
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
