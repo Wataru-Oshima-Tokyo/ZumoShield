@@ -72,4 +72,12 @@
         type="rviz" 
         args="-d $(find zumoShield)/rviz/zumoShield.rviz" 
     /--> 
+
+   <node
+        pkg="teleop_twist_keyboard"
+        name="teleop_twist_keyboardNode"
+        type="teleop_twist_keyboard.py"
+        output="screen">
+   </node>
+
 </launch>

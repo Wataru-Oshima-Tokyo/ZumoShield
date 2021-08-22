@@ -1,0 +1,11 @@
+<launch>
+     <node 
+        pkg="rosserial_python" 
+        name="rosserialNode" 
+        type="serial_node.py" 
+        output="screen">
+        <param name="~port"         type="string"   value="/dev/ttyACM0"/>
+        <param name="~baud"         type="int"   value="115200"/>
+    </node>
+
+</launch>
