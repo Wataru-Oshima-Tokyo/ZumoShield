@@ -118,7 +118,7 @@ class Zumo:
                 try:
                     self.command = ""
                     self.command =str(cvel.linear.x) + "," + str(cvel.angular.z);
-                    rospy.loginfo("Command received ["+self.command+"]" + "/n");
+                    rospy.loginfo("Command received ["+self.command+"]");
 #                      self.command = self.ser.read().decode('utf-8')
 #                     if self.command != "":
                        
