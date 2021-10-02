@@ -20,7 +20,7 @@ long timer=0;              // Elapsed time since program started (milli second)
 int16_t previousNum = 0;
 int16_t r_cnt = 0;
 int16_t l_cnt = 0;
-//int16_t flag = 0;
+int16_t flag = 0;
 int16_t basespeed = 150;       // Base speed of Morter (Effective Range: 1 - 150)
 int16_t positionLeft  = 0; // For encoder verification
 int16_t positionRight = 0; // For encoder verification
@@ -87,12 +87,12 @@ void control_Callback(const geometry_msgs::Twist& cmd_vel)
           motors.setSpeeds(basespeed*-1, basespeed*-0.7);
           positionLeft -= 150;
           positionRight -= 150;
-          delay(100);
+          delay(500);i
         }else {
           motors.setSpeeds(basespeed, basespeed*0.7);
           positionLeft += 150;
           positionRight += 150;
-          delay(100);
+          delay(500);
         }
          
          
@@ -120,7 +120,7 @@ void control_Callback(const geometry_msgs::Twist& cmd_vel)
 }
 
 //ros::Subscriber<std_msgs::String> sub("/command", control_Callback);
-ros::Subscriber<geometry_msgs::Twist> sub("/camera/tensorflow/cmd_vel", control_Callback);
+ros::Subscriber<geometry_msgs::Twist> sub("/cmd_vel", control_Callback);
 ros::Publisher chatter("/sensorval", &str_msg);
 //ros::Publisher motor("/encoder", &str_msg);
 
