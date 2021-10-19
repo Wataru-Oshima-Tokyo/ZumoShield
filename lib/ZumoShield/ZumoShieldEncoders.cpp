@@ -68,17 +68,17 @@ ISR(TIMER3_CAPT_vect)
 
 void ZumoShieldEncoders::init2()
 {
-//     // Set the pins as pulled-up inputs.
-//     FastGPIO::Pin<LEFT_XOR>::setInputPulledUp();
-//     FastGPIO::Pin<LEFT_B>::setInputPulledUp();
-//     FastGPIO::Pin<RIGHT_XOR>::setInputPulledUp();
-//     FastGPIO::Pin<RIGHT_B>::setInputPulledUp();
+    // Set the pins as pulled-up inputs.
+    FastGPIO::Pin<LEFT_XOR>::setInputPulledUp();
+    FastGPIO::Pin<LEFT_B>::setInputPulledUp();
+    FastGPIO::Pin<RIGHT_XOR>::setInputPulledUp();
+    FastGPIO::Pin<RIGHT_B>::setInputPulledUp();
 
-//     // Enable pin-change interrupt on PB4 for left encoder, and disable other
-//     // pin-change interrupts.
-//     PCICR = (1 << PCIE0);
-//     PCMSK0 = (1 << PCINT4);
-//     PCIFR = (1 << PCIF0);  // Clear its interrupt flag by writing a 1.
+    // Enable pin-change interrupt on PB4 for left encoder, and disable other
+    // pin-change interrupts.
+    PCICR = (1 << PCIE0);
+    PCMSK0 = (1 << PCINT4);
+    PCIFR = (1 << PCIF0);  // Clear its interrupt flag by writing a 1.
       /*
        * ICP1はアナログコンパレータと機能を兼用しているので
        * それをDISABLEとする。
@@ -112,13 +112,13 @@ void ZumoShieldEncoders::init2()
     // Initialize the variables.  It's good to do this after enabling the
     // interrupts in case the interrupts fired by accident as we were enabling
     // them.
-//     lastLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
-//     lastLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ lastLeftB;
+    lastLeftB = FastGPIO::Pin<LEFT_B>::isInputHigh();
+    lastLeftA = FastGPIO::Pin<LEFT_XOR>::isInputHigh() ^ lastLeftB;
     countLeft = 0;
     errorLeft = 0;
 
-//     lastRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
-//     lastRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ lastRightB;
+    lastRightB = FastGPIO::Pin<RIGHT_B>::isInputHigh();
+    lastRightA = FastGPIO::Pin<RIGHT_XOR>::isInputHigh() ^ lastRightB;
     countRight = 0;
     errorRight = 0;
 }
