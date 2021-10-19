@@ -6,29 +6,7 @@
 
 #include <stdint.h>
 
-#define RIGHT_CNT_FLAG 0x0001
-#define LEFT_CNT_FLAG  0x0002
-/*
-* ICP1はアナログコンパレータと機能を兼用しているので
-* それをDISABLEとする。
-* 「0」でENABLE、「1」でDISABLE
-*/
-ACSR = 0x80;
-ADCSRB = 0x00;
-DIDR1 = 0x00;
-/*
-* ICP1(インプットキャプチャー)の設定
-*/
-TCCR1A= 0x00;  // Disable Input Capture Noise Canceler
-TCCR1B = 0x41;  // Input Capture Edge : RISE
-              
-TIMSK1 = 0x20;  // Enable Input Capture Interrupt
-/*
-* ICP3(インプットキャプチャー)の設定
-*/
-TCCR3A= 0x00; // Disable Input Capture Noise Canceler
-TCCR3B = 0x41;  // Input Capture Edge : RISE
-TIMSK3 = 0x20;  // Enable Input Capture Interrupt
+
 
 
 /*! \brief Reads counts from the encoders on the Zumo 32U4.
