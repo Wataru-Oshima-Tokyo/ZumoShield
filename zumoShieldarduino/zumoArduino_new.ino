@@ -9,8 +9,8 @@
 
 
 long timer=0;              // Elapsed time since program started (milli second)
-int16_t vright = 0;            // Left Morter velocity (speed of motor)
-int16_t vleft = 0;  // Right Morter velocity (speed of motor)
+//int16_t vright = 0;            // Left Morter velocity (speed of motor)
+//int16_t vleft = 0;  // Right Morter velocity (speed of motor)
 int16_t previousNum = 0;
 int16_t basespeed = 200;       // Base speed of Morter (Effective Range: 1 - 150)
 int16_t positionLeft  = 0; // For encoder verification
@@ -24,7 +24,7 @@ geometry_msgs::Twist cmd_vel; //cmd_vel value
 
 
 LSM303 compass;            // Magnetometer
-L3G gyro;                  // Gyrometer
+//L3G gyro;                  // Gyrometer
 ZumoMotors motors;     // Morter
 ZumoShieldEncoders encoders; // Encoder
 ros::NodeHandle nh;        // NodeHandler of ROS
@@ -74,8 +74,8 @@ void setup()
   compass.init();          // Init magnetometer
   compass.enableDefault();
 
-  gyro.init();             // Init gyrometer
-  gyro.enableDefault();
+//  gyro.init();             // Init gyrometer
+//  gyro.enableDefault();
   Serial.begin(9600);
   sei();
 }
@@ -83,8 +83,8 @@ void setup()
 void loop()
 {
   compass.read();   // Read magnetometer
-  gyro.read();      // Read gyrometer
-  timer = millis();
+//  gyro.read();      // Read gyrometer
+//  timer = millis();
   newLeft = encoders.getCountsAndResetLeft();
   newRight = encoders.getCountsAndResetRight();
   if (!(encoders.checkErrorLeft()) && !(encoders.checkErrorRight())) {
@@ -93,7 +93,7 @@ void loop()
    }
   String s = "";
 
-  s += timer;          // [0]  Elapsed time since program started (milli second)
+  s += 0;          // [0]  Elapsed time since program started (milli second)
   s += ',';
   s += compass.a.x;    // [1]  Accelerometer.x
   s += ',';
@@ -101,25 +101,25 @@ void loop()
   s += ',';
   s += compass.a.z;    // [3]  Accelerometer.z
   s += ',';
-  s += compass.m.x;    // [4]  Magnetometer.x
+  s += 0;    // [4]  Magnetometer.x
   s += ',';
-  s += compass.m.y;    // [5]  Magnetometer.y
+  s += 0;    // [5]  Magnetometer.y
   s += ',';
-  s += compass.m.z;    // [6]  Magnetometer.z
+  s += 0;    // [6]  Magnetometer.z
   s += ',';
-  s += vleft;          // [7]  Left Morter velocity (speed of motor)
+  s += 0;          // [7]  Left Morter velocity (speed of motor)
   s += ',';
-  s += vright;         // [8]  Right Morter velocity (speed of motor)
+  s += 0;         // [8]  Right Morter velocity (speed of motor)
   s += ',';
   s += positionLeft; //r_cnt;   // [9]  Left Morter odometry (Rotation angle of motor)
   s += ',';
   s += positionRight  ;//;  // [10] Right Morter odometry (Rotation angle of motor)
-  s += ',';   
-  s += gyro.g.x;       // [11] Gyrometer.x
-  s += ',';
-  s += gyro.g.y;       // [12] Gyrometer.y
-  s += ',';
-  s += gyro.g.z;       // [13] Gyrometer.z
+//  s += ',';   
+//  s += 0;       // [11] Gyrometer.x
+//  s += ',';
+//  s += 0;       // [12] Gyrometer.y
+//  s += ',';
+//  s += 0;       // [13] Gyrometer.z
 
   Serial.println(s);  // Debug Print
   
@@ -128,3 +128,4 @@ void loop()
   nh.spinOnce();
   delay(10);
 }
+
