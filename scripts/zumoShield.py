@@ -63,18 +63,7 @@ class Zumo:
         self.cvel = Twist()
         self.cvel.linear.x = 0
         self.cvel.angular.z = 0
-#         try:
-#             self.ser = serial.Serial(self.PORT, self.BAUDRATE, timeout = self.TIMEOUT)
-#             sleep(1)
-#             rospy.loginfo("Serial connection established on the port "+str(self.PORT))
-#         except:
-#             rospy.logwarn("Serial connection failure")
 
-
-#         self.subcmd_vel = rospy.Subscriber("cmd_vel", Twist, self.subcmd_vel)
-#         rospy.loginfo("Subscriber initialization success /cmd_vel")
-#         self.pub_comm      = rospy.Publisher('command', String, queue_size=10)
-#         rospy.loginfo("Publisher initialization success /command")
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
         self.pub_odom      = rospy.Publisher('odom', Odometry, queue_size=10)
@@ -87,56 +76,29 @@ class Zumo:
     def __delete__(self):
         self.ser.close()
 
-#     def pubcommand(self):
-#         try:
-#             print("")
-# # #             self.ser.flush()
-# #             self.command = ""
-# #             self.command =str(self.linearSpeed) + "," + str(self.angularSpeed)
-# # #             self.command = self.ser.read().decode('utf-8')
-# #             if self.command != "":
-# #                 rospy.loginfo("Command received ["+self.command+"]")
-# #                 self.pub_comm.publish(self.command)
-#         except Exception as e:
-#             print(e)
-#             pass
+
 
     def subsensorval(self, svalue):
         try:
             if len(svalue.data) > 0:
-#                 rospy.loginfo(svalue.data)
+                #rospy.loginfo(svalue.data)
                 self.sensorvalue = svalue.data.split(',')
-                if len(self.sensorvalue) > 3:
-#                  if len(self.sensorvalue) ==14 :
+                if len(self.sensorvalue) == 14:
                     self.pubimu()
                     self.pubodom()
         except:
             print "subsensorval Error"
             traceback.print_exc()
 
-#     def subcmd_vel(self, cvel):
-#                 try:
-#                     self.command = ""
-#                     self.command =str(cvel.linear.x) + "," + str(cvel.angular.z);
-#                     rospy.loginfo("Command received ["+self.command+"]");
-# #                      self.command = self.ser.read().decode('utf-8')
-# #                     if self.command != "":
-                       
-# #                         self.pub_comm.publish(self.command)
-#                 except Exception as e:
-#                     print(e)
-#                     pass
+
                 
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
         self.p.linear_acceleration.y=4*9.81*(float(self.sensorvalue[2])/2**16)/100
         self.p.linear_acceleration.z=4*9.81*(float(self.sensorvalue[3])/2**16)/100
-#         self.p.orientation.x= float(self.sensorvalue[4])
-        self.p.orientation.x= float(self.sensorvalue[3])
-#         self.p.orientation.y=float(self.sensorvalue[5])
-        self.p.orientation.y=float(self.sensorvalue[4])
-#         self.p.orientation.z=float(self.sensorvalue[6])
-        self.p.orientation.z=float(self.sensorvalue[5])
+        self.p.orientation.x= float(self.sensorvalue[4])
+        self.p.orientation.y=float(self.sensorvalue[5])
+        self.p.orientation.z=float(self.sensorvalue[6])
         self.p.header.stamp = rospy.Time.now()
         self.pub_imu.publish(self.p)
     
@@ -145,21 +107,14 @@ class Zumo:
         VL=0.0
         VR=0.0
 
-#         if float(self.sensorvalue[10])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
-#             self.delta=(float(self.sensorvalue[0])-float(self.temps))/1000 #[Second] Elapsed time from latest measurement
-#             VR=(float(self.sensorvalue[10])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
-#             VL=(float(self.sensorvalue[9])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
-#             self.odomL=float(self.sensorvalue[9])
-#             self.odomR=float(self.sensorvalue[10])
-#             self.temps=self.sensorvalue[0]
-        if float(self.sensorvalue[2])!=self.odomR or float(self.sensorvalue[1])!=self.odomL:
+        if float(self.sensorvalue[10])!=self.odomR or float(self.sensorvalue[9])!=self.odomL:
             self.delta=(float(self.sensorvalue[0])-float(self.temps))/1000 #[Second] Elapsed time from latest measurement
-            VR=(float(self.sensorvalue[2])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
-            VL=(float(self.sensorvalue[1])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
-            self.odomL=float(self.sensorvalue[1])
-            self.odomR=float(self.sensorvalue[2])
+            VR=(float(self.sensorvalue[10])-float(self.odomR))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of right wheel
+            VL=(float(self.sensorvalue[9])-float(self.odomL))/self.COUNT*3.14*self.DIAMETER/self.delta #[Meter] Advance distance of left wheel
+            self.odomL=float(self.sensorvalue[9])
+            self.odomR=float(self.sensorvalue[10])
             self.temps=self.sensorvalue[0]
-#             rospy.loginfo("[odomL] "+str(self.odomL)+" [odomR] "+str(self.odomR)+" [delta] "+str(self.delta)+" [VL] "+str(VL)+" [VR] "+str(VR))
+            #rospy.loginfo("[odomL] "+str(self.odomL)+" [odomR] "+str(self.odomR)+" [delta] "+str(self.delta)+" [VL] "+str(VL)+" [VR] "+str(VR))
         else :
             VR=0.0
             VL=0.0
