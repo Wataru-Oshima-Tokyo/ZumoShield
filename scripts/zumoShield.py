@@ -83,7 +83,7 @@ class Zumo:
             if len(svalue.data) > 0:
                 #rospy.loginfo(svalue.data)
                 self.sensorvalue = svalue.data.split(',')
-                if len(self.sensorvalue) == 14:
+                if len(self.sensorvalue) >5:
                     self.pubimu()
                     self.pubodom()
         except:
