@@ -87,7 +87,7 @@ class Zumo:
                     self.pubimu()
                     self.pubodom()
         except:
-            print "subsensorval Error"
+            print("subsensorval Error")
             traceback.print_exc()
 
 
