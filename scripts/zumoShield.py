@@ -97,7 +97,7 @@ class Zumo:
          try:
              self.command=""
              self.command=str(cvel.linear.x) +","+str(cvel.angular.z)
-             if seld.command != "":
+             if self.command != "":
                       rospu.loginfo("Command received ["+self.command+"]")                      
                       self.pub_comm.publish(self.command)
          except Exception as e:
