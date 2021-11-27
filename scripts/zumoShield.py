@@ -64,7 +64,7 @@ class Zumo:
         self.cvel.linear.x = 0
         self.cvel.angular.z = 0
         
-        self.sub_cmd_vel   =rospy.Subscriber('/cmd_vel, TWIST, self.sub_cmd_vel)
+        self.sub_cmd_vel   =rospy.Subscriber('/cmd_vel, Twist, self.sub_cmd_vel)
         rospy.loginfo("Subscriber initialization success /cmd_vel")                                   
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
@@ -102,7 +102,8 @@ class Zumo:
                       self.pub_comm.publish(self.command)
          except Exception as e:
              print(e)                                
-             pass                                
+             pass   
+                                             
     def pubimu(self):
         self.p.linear_acceleration.x=4*9.81*(float(self.sensorvalue[1])/2**16)/100
         self.p.linear_acceleration.y=4*9.81*(float(self.sensorvalue[2])/2**16)/100
