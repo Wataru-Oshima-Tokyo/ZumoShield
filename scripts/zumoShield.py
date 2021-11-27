@@ -64,7 +64,7 @@ class Zumo:
         self.cvel.linear.x = 0
         self.cvel.angular.z = 0
         
-        self.sub_cmd_vel   =rospy.Subscriber('/cmd_vel, Twist, self.sub_cmdvel)
+        self.sub_cmd_vel   =rospy.Subscriber('cmd_vel', Twist, self.sub_cmdvel)
         rospy.loginfo("Subscriber initialization success /cmd_vel")                                   
         self.pub_imu       = rospy.Publisher('imu', Imu, queue_size=10)
         rospy.loginfo("Publisher initialization success /imu")
